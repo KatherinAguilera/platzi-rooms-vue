@@ -1,4 +1,5 @@
 <template>
+  <!-- default layout (header footer search) -->
   <default-layout>
     <section class="container py-6">
       <h1 class="text-3xl font-light text-grey-darkest mb-3">Explore</h1>

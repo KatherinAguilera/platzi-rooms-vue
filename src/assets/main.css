@@ -40,7 +40,7 @@ body {
 }
 
 .btn:hover {
-  @apply bg-grey-lightest;
+  @apply bg-grey;
 }
 
 .btn__outline {
