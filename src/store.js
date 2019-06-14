@@ -23,4 +23,8 @@ export default new Vuex.Store({
       commit('SET_MODAL_STATE', { name, value });
     },
   },
+  getters: {
+    // retornar obtener los datos del state
+    modals: state => state.modals,
+  },
 });

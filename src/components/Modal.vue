@@ -30,6 +30,7 @@ export default {
 </script>
 
 <style scoped>
+
 .modal {
   min-width: 350px;
   top: 50%;
@@ -39,10 +40,10 @@ export default {
   z-index: 2000;
   @apply absolute bg-white p-4 shadow-lg rounded;
 }
- .modal > .modal-head {
+.modal > .modal-head {
   @apply relative;
 }
- .modal-wrapper::after {
+.modal-wrapper::after {
   content: "";
   position: fixed;
   top: 0;
