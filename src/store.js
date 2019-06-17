@@ -30,5 +30,6 @@ export default new Vuex.Store({
     // retornar obtener los datos del state
     modals: state => state.modals,
     authUser: state => state.users[state.authId],
+    rooms: state => state.rooms,
   },
 });
