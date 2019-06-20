@@ -52,6 +52,10 @@ import PageLayout from '@/layouts/PageLayout.vue';
 
 export default {
   name: 'SearchPage',
+  beforeCreate() {
+     //obetener los datos de firebase
+    this.$store.dispatch('FETCH_ROOMS');
+  },
   computed:{
     ...mapGetters([
       'rooms',

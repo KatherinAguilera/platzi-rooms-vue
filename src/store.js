@@ -1,32 +1,28 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import firebase from 'firebase';
-// import sourceData from './data.json';
 import countObjectProperties from './utils';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    // ...sourceData,
-    authId: '38St7Q8Zi2N1SPa5ahzssq9kbyp1',
-    // Logica con vuex del modal
+    users: {},
+    services: {},
+    rooms: {},
+    authId: null,
     modals: {
       login: false,
+      register: false,
     },
   },
-  // hacer la modificacion del state
   mutations: {
     SET_MODAL_STATE: (state, { name, value }) => {
-      // de acuerdo al nombre del modal modifique su valor
       state.modals[name] = value;
     },
     SET_ROOM(state, { newRoom, roomId }) {
-      // asignar el valor nuevo hacia el obj que ya tenemos
-      // vue.set push ya que arreglos y objetos no funcionan dinamicamente de manera reactiva
       Vue.set(state.rooms, roomId, newRoom);
     },
-    // agregar la nueva room y asignarla al user
     APPEND_ROOM_TO_USER(state, { roomId, userId }) {
       Vue.set(state.users[userId].rooms, roomId, roomId);
     },
@@ -45,17 +41,23 @@ export default new Vuex.Store({
     },
     CREATE_ROOM: ({ state, commit }, room) => {
       const newRoom = room;
-      const roomId = `room${Math.random()}`;
-      newRoom['.key'] = roomId;
+      const roomId = firebase.database().ref('rooms').push().key;
       newRoom.userId = state.authId;
+      newRoom.publishedAt = Math.floor(Date.now() / 1000);
+      newRoom.meta = { likes: 0 };
 
-      commit('SET_ROOM', { newRoom, roomId });
-      commit('APPEND_ROOM_TO_USER', { roomId, userId: newRoom.userId });
+      const updates = {};
+      updates[`rooms/${roomId}`] = newRoom;
+      updates[`users/${newRoom.userId}/rooms/${roomId}`] = roomId;
+      firebase.database().ref().update(updates).then(() => {
+        commit('SET_ROOM', { newRoom, roomId });
+        commit('APPEND_ROOM_TO_USER', { roomId, userId: newRoom.userId });
+        return Promise.resolve(state.rooms[roomId]);
+      });
     },
     FETCH_ROOMS: ({ state, commit }, limit) => new Promise((resolve) => {
       let instance = firebase.database().ref('rooms');
       if (limit) {
-        // los primeros que se encuentre en ese limite
         instance = instance.limitToFirst(limit);
       }
       instance.once('value', (snapshot) => {
@@ -73,11 +75,40 @@ export default new Vuex.Store({
         resolve(state.users[id]);
       });
     }),
+    CREATE_USER: ({ state, commit }, { email, name, password }) => new Promise((resolve) => {
+      firebase.auth().createUserWithEmailAndPassword(email, password).then((account) => {
+        const id = account.user.uid;
+        const registeredAt = Math.floor(Date.now() / 1000);
+        const newUser = { email, name, registeredAt };
+        firebase.database().ref('users').child(id).set(newUser)
+          .then(() => {
+            commit('SET_ITEM', { resource: 'users', id, item: newUser });
+            resolve(state.users[id]);
+          });
+      });
+    }),
+    FETCH_AUTH_USER: ({ dispatch, commit }) => {
+      const userId = firebase.auth().currentUser.uid;
+      return dispatch('FETCH_USER', { id: userId })
+        .then(() => {
+          commit('SET_AUTHID', userId);
+        });
+    },
+    SIGN_IN(context, { email, password }) {
+      return firebase.auth().signInWithEmailAndPassword(email, password);
+    },
+    LOG_OUT({ commit }) {
+      firebase.auth().signOut()
+        .then(() => {
+          commit('SET_AUTHID', null);
+        });
+    },
   },
   getters: {
-    // retornar obtener los datos del state
     modals: state => state.modals,
-    authUser: state => state.users[state.authId],
+    authUser(state) {
+      return (state.authId) ? state.users[state.authId] : null;
+    },
     rooms: state => state.rooms,
     userRoomsCount: state => id => countObjectProperties(state.users[id].rooms),
   },

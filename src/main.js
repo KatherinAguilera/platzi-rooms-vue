@@ -23,4 +23,9 @@ new Vue({
   router,
   store,
   render: h => h(App),
+  beforeCreate() {
+    if (store.state.authId) {
+      this.$store.dispatch('FETCH_USER', { id: store.state.authId });
+    }
+  },
 }).$mount('#app');
