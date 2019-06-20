@@ -64,7 +64,7 @@ export default {
         feature_image: featuredImage,
         publishedAt: Date.now(),
       }
-
+      // guardar los datos
       this.$store.dispatch('CREATE_ROOM', room);
     },
   },
