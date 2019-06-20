@@ -1,14 +1,14 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import sourceData from './data.json';
+import firebase from 'firebase';
+// import sourceData from './data.json';
 import countObjectProperties from './utils';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    ...sourceData,
-    user: null,
+    // ...sourceData,
     authId: '38St7Q8Zi2N1SPa5ahzssq9kbyp1',
     // Logica con vuex del modal
     modals: {
@@ -30,6 +30,14 @@ export default new Vuex.Store({
     APPEND_ROOM_TO_USER(state, { roomId, userId }) {
       Vue.set(state.users[userId].rooms, roomId, roomId);
     },
+    SET_ITEM(state, { item, id, resource }) {
+      const newItem = item;
+      newItem['.key'] = id;
+      Vue.set(state[resource], id, newItem);
+    },
+    SET_AUTHID(state, id) {
+      state.authId = id;
+    },
   },
   actions: {
     TOGGLE_MODAL_STATE: ({ commit }, { name, value }) => {
@@ -44,6 +52,27 @@ export default new Vuex.Store({
       commit('SET_ROOM', { newRoom, roomId });
       commit('APPEND_ROOM_TO_USER', { roomId, userId: newRoom.userId });
     },
+    FETCH_ROOMS: ({ state, commit }, limit) => new Promise((resolve) => {
+      let instance = firebase.database().ref('rooms');
+      if (limit) {
+        // los primeros que se encuentre en ese limite
+        instance = instance.limitToFirst(limit);
+      }
+      instance.once('value', (snapshot) => {
+        const rooms = snapshot.val();
+        Object.keys(rooms).forEach((roomId) => {
+          const room = rooms[roomId];
+          commit('SET_ITEM', { resource: 'rooms', id: roomId, item: room });
+        });
+        resolve(Object.values(state.rooms));
+      });
+    }),
+    FETCH_USER: ({ state, commit }, { id }) => new Promise((resolve) => {
+      firebase.database().ref('users').child(id).once('value', (snapshot) => {
+        commit('SET_ITEM', { resource: 'users', id: snapshot.key, item: snapshot.val() });
+        resolve(state.users[id]);
+      });
+    }),
   },
   getters: {
     // retornar obtener los datos del state
