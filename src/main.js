@@ -19,6 +19,12 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    store.dispatch('FETCH_AUTH_USER');
+  }
+});
+
 new Vue({
   router,
   store,
