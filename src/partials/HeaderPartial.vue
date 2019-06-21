@@ -23,7 +23,7 @@
                     <i class="material-icons">notifications</i>
                   </button>
                   <div class="flex items-center mr-4">
-                    <img class="w-8 h-8 rounded-full mr-2" src="https://avatars2.githubusercontent.com/u/1901273?s=460&v=4" alt="Avatar of Javier Diaz">
+                    <img class="w-8 h-8 rounded-full mr-2" src="https://avatars1.githubusercontent.com/u/4594747?s=460&v=4" alt="Avatar">
                     <div class="text-sm">
                       <p class="text-black leading-none">{{ user.name }}</p>
                       <p class="text-grey-dark">Online</p>
