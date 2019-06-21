@@ -75,6 +75,7 @@ export default new Vuex.Store({
         resolve(state.users[id]);
       });
     }),
+    // registro usuario
     CREATE_USER: ({ state, commit }, { email, name, password }) => new Promise((resolve) => {
       firebase.auth().createUserWithEmailAndPassword(email, password).then((account) => {
         const id = account.user.uid;
@@ -87,6 +88,7 @@ export default new Vuex.Store({
           });
       });
     }),
+    // inicio de sesion
     FETCH_AUTH_USER: ({ dispatch, commit }) => {
       const userId = firebase.auth().currentUser.uid;
       return dispatch('FETCH_USER', { id: userId })
@@ -94,6 +96,7 @@ export default new Vuex.Store({
           commit('SET_AUTHID', userId);
         });
     },
+    // si usuario y contrase;a son correctas o existan
     SIGN_IN(context, { email, password }) {
       return firebase.auth().signInWithEmailAndPassword(email, password);
     },
