@@ -5,12 +5,24 @@
       <h1 class="text-3xl font-light text-grey-darkest mb-3">Recommended</h1>
       <div class="section">
         <tiny-slider>
-          <div class="slider-item">1</div>
-          <div class="slider-item">2</div>
-          <div class="slider-item">3</div>
-          <div class="slider-item">4</div>
-          <div class="slider-item">5</div>
-          <div class="slider-item">6</div>
+          <div class="slider-item">
+            <img class="recommend center" width="850"  src="https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1349&q=80">
+            </div>
+          <div class="slider-item">
+            <img class="recommend center" width="850"  src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1273&q=80">
+          </div>
+          <div class="slider-item">
+            <img class="recommend center" width="850"  src="https://images.unsplash.com/photo-1463797221720-6b07e6426c24?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80">
+          </div>
+          <div class="slider-item">
+            <img class="recommend center" width="850"  src="https://images.unsplash.com/photo-1520097411146-bbd8b2a661c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80">
+          </div>
+          <div class="slider-item">
+            <img class="recommend center" width="850"  src="https://images.unsplash.com/photo-1520097197299-12e7e93eb674?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+          </div>
+          <div class="slider-item">
+            <img class="recommend center" width="850"  src="https://images.unsplash.com/photo-1537141648896-c18bc166303c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2152&q=80">
+          </div>
         </tiny-slider>
       </div>
     </section>

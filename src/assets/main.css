@@ -58,3 +58,19 @@ body {
 .btn__outline.btn__outline--teal:hover {
   @apply bg-teal text-white;
 }
+
+
+.slider-item{
+  text-align: center;
+}
+.tns-controls {
+  display: flex;
+  justify-content: center;
+}
+.tns-controls button{
+  background: #F2D024;
+  color: lightslategray;
+  font-weight: bold;
+  margin-right: 5px;
+  padding: 5px 15px;
+}
